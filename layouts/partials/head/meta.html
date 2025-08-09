@@ -1,5 +1,8 @@
 {{ "<!-- meta.html -->" | safeHTML -}}
-{{- $author := cond (and .IsPage .Params.author) .Params.author site.Params.Author.Name }}
+{{- $author := site.Params.Author.Name }}
+{{- if (and .IsPage (isset .Params "author")) }}
+  {{- $author = printf "%s" .Params.author }}
+{{- end }}
 {{- $siteTitle := or site.Title site.Params.title | plainify }}
 {{- $permalink := .Permalink }}
 {{- $title := cond .IsHome $siteTitle (printf "%s | %s" .Title $siteTitle) | plainify  }}
@@ -93,7 +96,7 @@
     {{- end }}
     <meta property="og:site_name" content="{{ .siteTitle }}" />
     {{- if .IsPage -}}
-        <meta property="article:author" content="{{ .author }}" />
+        <meta property="article:author" content="{{ .author | default "" }}" />
         {{- with .publishDate }}
             <meta property="article:published_time" content="{{ . }}" />
         {{- end }}
