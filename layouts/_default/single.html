@@ -131,8 +131,10 @@
     </div>
     {{- end }}
     {{ if not site.Params.comments.disabled -}}
-        {{- $toot := or .Params.toot  .Params.mstd .Params.mastodon }}
-        {{- $bsky := or .Params.skeet .Params.bsky .Params.bluesky }}
+        {{- $tootRaw := or .Params.toot  .Params.mstd .Params.mastodon }}
+        {{- $bskyRaw := or .Params.skeet .Params.bsky .Params.bluesky }}
+        {{- $toot := ne $tootRaw "" }}
+        {{- $bsky := ne $bskyRaw "" }}
         {{- $giscus := isset .Site.Params "giscus" }}
         {{ if or $toot $bsky $giscus -}}
             {{ if not (or $toot $bsky) -}}
